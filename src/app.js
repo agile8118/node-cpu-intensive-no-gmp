@@ -1,13 +1,14 @@
 const { performance } = require("perf_hooks");
 const { Worker } = require("worker_threads");
+const path = require("path");
 const util = require("util");
 const { generatePrimes } = require("bindings")("heavy-lifter");
-const generatePrimesJS = require("./lib/prime-generator"); // JavaScript version
+const generatePrimesJS = require("../lib/prime-generator"); // JavaScript version
 
 const generatePrimesCPP = util.promisify(generatePrimes); // C++ version
 
-const count = 16; // total number of primes numbers to generate
-const startingNumber = "9007199254740991"; // starting number to start generating primes from
+const count = 8; // total number of primes numbers to generate
+const startingNumber = "9000000000000000000"; // starting number to start generating primes from
 const threads = 8;
 
 // Convert the starting number to a BigInt if it's larger than Number.MAX_SAFE_INTEGER
@@ -60,7 +61,7 @@ if (startingNumberJS < Number.MAX_SAFE_INTEGER) {
   const start4 = performance.now();
 
   for (let i = 0; i < threads; i++) {
-    const worker = new Worker("./worker.js", {
+    const worker = new Worker(path.resolve(__dirname, "worker.js"), {
       workerData: {
         count: count / threads,
         start:

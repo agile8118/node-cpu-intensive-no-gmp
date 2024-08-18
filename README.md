@@ -1,27 +1,7 @@
-This project is about doing a CPU-intensive operation in Node.js using 4 different ways.
-
-First, we’ll perform the operation using a single thread in C++.
-Next, we’ll execute it using multiple threads in C++.
-Then, we’ll run it in JavaScript with a single thread.
-Finally, we’ll execute it in JavaScript using multiple threads.
+This repo is from the node-cpu-intensive repo but without the GMP support. If you are unable to install GMP, you can try this project. For more info refer to node-cpu-intensive.
 
 ##### How to run the app:
 
-1. First build GMP
-2. Configure GYP: `node-gyp configure`
-3. Compile the native code: `node-gyp build`
-4. Finally run `npm start`
-
-##### Steps to build GMP:
-
-- cd GMP
-- ./configure --enable-cxx --disable-shared
-- make
-- make check
-
-##### New Instructions:
-
-- ./gmp-setup.sh
-- npm install
-- npm run config
-- npm start
+1. `npm install`
+2. `npm run config`
+3. `npm start`

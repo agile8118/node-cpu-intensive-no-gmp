@@ -6,13 +6,9 @@ public:
   GeneratePrimesWrapper(Napi::Function& callback, int count, std::string startingNumber, bool format, bool log, int threads)
     : Napi::AsyncWorker(callback), count(count), startingNumber(startingNumber), format(format), log(log), threads(threads) {}
 
+  // This function is executed in a separate thread
   void Execute() override {
-    if (threads > 1) {
-      primes = generatePrimesThreads(threads, count, startingNumber, format, log);
-    }
-    else {
-      primes = generatePrimes(count, startingNumber, format, log);
-    }
+    primes = generatePrimesThreads(threads > 1 ? threads : 1, count, startingNumber, format, log);
   }
 
   void OnOK() override {
@@ -23,7 +19,7 @@ public:
       jsPrimes[i] = Napi::String::New(env, primes[i]);
     }
 
-    Callback().Call({ env.Null(), jsPrimes });
+    Callback().Call({ env.Null(), jsPrimes }); // this is where we push a callback to the callback queue
   }
 
 private:
